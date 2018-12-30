@@ -1,6 +1,7 @@
 ﻿#region Includes
 
 using System;
+using System.Security.Authentication.ExtendedProtection;
 using System.Windows.Forms;
 
 #endregion Includes
@@ -9,6 +10,8 @@ namespace FeedbackApp_V4._0
 {
     public partial class frmLogin : Form
     {
+        protected internal static bool loggedIn = false;
+        protected internal static bool registered = false;
 
         #region Initiliaser Handler
 
@@ -95,11 +98,15 @@ namespace FeedbackApp_V4._0
 
         #region ExitProgram() Subroutine Handler
 
-        private static void ExitProgram()
+        private void ExitProgram()
         {
             if (MessageBox.Show(@"Are you sure you wish to exit?", @"Exit Program", MessageBoxButtons.YesNo) ==
                 DialogResult.Yes)
             {
+                if (!loggedIn && !registered)
+                    LogMessage(@"Exit occured without valid login or registration.");
+                else if (!loggedIn)
+                    LogMessage(@"User registered but did not login.");
                 Environment.Exit(Environment.ExitCode);
             }
             else
@@ -136,7 +143,6 @@ namespace FeedbackApp_V4._0
 
         private void btnExit_Click_1(object sender, EventArgs e)
         {
-            LogMessage("Application exited without a valid login.");
 
             ExitProgram();
         }
@@ -161,6 +167,11 @@ namespace FeedbackApp_V4._0
                 var isPupil = newUserForm.chkIsPupil.Checked;
                 var isTeacher = newUserForm.chkIsTeacher.Checked;
                 var isAdmin = newUserForm.chkIsAdmin.Checked;
+
+                registered = true;
+
+                // MessageBox.Show(firstName + ", " + lastName + ", " + userName + ", " + password + ", isPupil " +
+                //                isPupil + ", isTeacher " + isTeacher + ", isAdmin" + isAdmin);
             }
 
         }

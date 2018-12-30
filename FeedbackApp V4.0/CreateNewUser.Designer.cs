@@ -61,7 +61,7 @@
             this.label1.Location = new System.Drawing.Point(25, 119);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(92, 24);
-            this.label1.TabIndex = 1;
+            this.label1.TabIndex = 4;
             this.label1.Text = "Password";
             // 
             // lblLastName
@@ -84,7 +84,7 @@
             this.chkIsPupil.Location = new System.Drawing.Point(35, 210);
             this.chkIsPupil.Name = "chkIsPupil";
             this.chkIsPupil.Size = new System.Drawing.Size(146, 28);
-            this.chkIsPupil.TabIndex = 3;
+            this.chkIsPupil.TabIndex = 8;
             this.chkIsPupil.Text = "Pupil Account";
             this.chkIsPupil.UseVisualStyleBackColor = true;
             // 
@@ -96,7 +96,7 @@
             this.chkIsTeacher.Location = new System.Drawing.Point(214, 210);
             this.chkIsTeacher.Name = "chkIsTeacher";
             this.chkIsTeacher.Size = new System.Drawing.Size(175, 28);
-            this.chkIsTeacher.TabIndex = 4;
+            this.chkIsTeacher.TabIndex = 9;
             this.chkIsTeacher.Text = "Teacher Account";
             this.chkIsTeacher.UseVisualStyleBackColor = true;
             // 
@@ -108,7 +108,7 @@
             this.chkIsAdmin.Location = new System.Drawing.Point(415, 210);
             this.chkIsAdmin.Name = "chkIsAdmin";
             this.chkIsAdmin.Size = new System.Drawing.Size(159, 28);
-            this.chkIsAdmin.TabIndex = 5;
+            this.chkIsAdmin.TabIndex = 10;
             this.chkIsAdmin.Text = "Admin Account";
             this.chkIsAdmin.UseVisualStyleBackColor = true;
             // 
@@ -128,7 +128,8 @@
             this.txtFirstName.Location = new System.Drawing.Point(214, 25);
             this.txtFirstName.Name = "txtFirstName";
             this.txtFirstName.Size = new System.Drawing.Size(360, 29);
-            this.txtFirstName.TabIndex = 7;
+            this.txtFirstName.TabIndex = 1;
+            this.txtFirstName.TextChanged += new System.EventHandler(this.txtFirstName_TextChanged);
             // 
             // txtUserName
             // 
@@ -137,7 +138,7 @@
             this.txtUserName.Location = new System.Drawing.Point(214, 161);
             this.txtUserName.Name = "txtUserName";
             this.txtUserName.Size = new System.Drawing.Size(360, 29);
-            this.txtUserName.TabIndex = 8;
+            this.txtUserName.TabIndex = 7;
             // 
             // txtPassword
             // 
@@ -146,7 +147,7 @@
             this.txtPassword.Name = "txtPassword";
             this.txtPassword.PasswordChar = '*';
             this.txtPassword.Size = new System.Drawing.Size(360, 29);
-            this.txtPassword.TabIndex = 9;
+            this.txtPassword.TabIndex = 5;
             // 
             // txtLastName
             // 
@@ -154,10 +155,11 @@
             this.txtLastName.Location = new System.Drawing.Point(214, 68);
             this.txtLastName.Name = "txtLastName";
             this.txtLastName.Size = new System.Drawing.Size(360, 29);
-            this.txtLastName.TabIndex = 10;
+            this.txtLastName.TabIndex = 3;
             // 
             // btnOK
             // 
+            this.btnOK.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.btnOK.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnOK.Location = new System.Drawing.Point(29, 267);
             this.btnOK.Name = "btnOK";
