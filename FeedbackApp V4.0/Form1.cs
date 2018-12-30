@@ -1,14 +1,25 @@
-﻿using System;
+﻿#region Includes
+
+using System;
 using System.Windows.Forms;
+
+#endregion Includes
 
 namespace FeedbackApp_V4._0
 {
     public partial class frmLogin : Form
     {
+
+        #region Initiliaser Handler
+
         public frmLogin()
         {
             InitializeComponent();
         }
+
+        #endregion Initialiser Handler  
+
+        #region Form Load Handler
 
         private void frmLogin_Load(object sender, EventArgs e)
         {
@@ -16,10 +27,18 @@ namespace FeedbackApp_V4._0
             btnRegister.Enabled = true;
         }
 
+        #endregion Form Load Handler
+
+        #region Login Button Handler
+
         private void btnLogin_Click(object sender, EventArgs e)
         {
             LogMessage(@"Attempted login by user '" + txtUserName.Text + "'.");
         }
+
+        #endregion Login Button Handler
+
+        #region User Name Textbox Changing Text Handler
 
         private void txtUserName_TextChanged(object sender, EventArgs e)
         {
@@ -40,6 +59,10 @@ namespace FeedbackApp_V4._0
             }
         }
 
+        #endregion User Name Textbox Changing Text Handler
+
+        #region Password Textbox Changing Text Handler
+
         private void txtPassword_TextChanged(object sender, EventArgs e)
         {
             if (txtPassword.Text == "" && txtUserName.Text == "")
@@ -59,15 +82,18 @@ namespace FeedbackApp_V4._0
             }
         }
 
-        private void btnRegister_Click(object sender, EventArgs e)
-        {
+        #endregion Password Textbox Changing Text Handler
 
+        #region Register Button Handler
+
+        private void btnRegister_Click_1(object sender, EventArgs e)
+        {
+            ShowNewUserRegistrationForm();
         }
 
-        private void btnExit_Click(object sender, EventArgs e)
-        {
-            ExitProgram();
-        }
+        #endregion Register Button Handler
+
+        #region ExitProgram() Subroutine Handler
 
         private static void ExitProgram()
         {
@@ -82,16 +108,20 @@ namespace FeedbackApp_V4._0
             }
         }
 
+        #endregion ExitProgram() Subroutine Handler
+
+        #region LogMessage(string message) Subroutine Handler
+
         private void LogMessage(string message)
         {
             try
             {
                 // Code to append system log
                 // Consider making Async for efficiency
-                var _Message = DateTime.Now.ToLongDateString() + ", " + DateTime.Now.ToLongTimeString() + ", " +
+                var logMessage = DateTime.Now.ToLongDateString() + ", " + DateTime.Now.ToLongTimeString() + ", " +
                                message;
                 // Log _Message to appropriate place
-                MessageBox.Show(_Message);
+                MessageBox.Show(logMessage);
             }
             catch (Exception e)
             {
@@ -100,14 +130,40 @@ namespace FeedbackApp_V4._0
             }
         }
 
+        #endregion LogMessage(string message) Subroutine Handler
+
+        #region Exit Button Handler
+
         private void btnExit_Click_1(object sender, EventArgs e)
         {
+            LogMessage("Application exited without a valid login.");
+
             ExitProgram();
         }
 
-        private void btnRegister_Click_1(object sender, EventArgs e)
+        #endregion Exit Button Handler
+
+        public void ShowNewUserRegistrationForm()
         {
+
             LogMessage(@"New registration attempt started.");
+
+            var newUserForm = new CreateNewUser();
+
+            LogMessage(@"Registration form opened.");
+
+            if (newUserForm.ShowDialog(this) == DialogResult.OK)
+            {
+                var userName = newUserForm.txtUserName.Text;
+                var firstName = newUserForm.txtFirstName.Text;
+                var lastName = newUserForm.txtLastName.Text;
+                var password = newUserForm.txtPassword.Text;
+                var isPupil = newUserForm.chkIsPupil.Checked;
+                var isTeacher = newUserForm.chkIsTeacher.Checked;
+                var isAdmin = newUserForm.chkIsAdmin.Checked;
+            }
+
         }
+
     }
 }
