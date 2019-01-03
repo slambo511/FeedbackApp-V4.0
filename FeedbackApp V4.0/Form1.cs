@@ -193,6 +193,8 @@ namespace FeedbackApp_V4._0
                 var iT = newUserForm.chkIsTeacher.Checked;
                 var iA = newUserForm.chkIsAdmin.Checked;
 
+                // not sure what is going on here.
+
                 registered = true;
 
                 // MessageBox.Show(firstName + ", " + lastName + ", " + userName + ", " + password + ", isPupil " +
