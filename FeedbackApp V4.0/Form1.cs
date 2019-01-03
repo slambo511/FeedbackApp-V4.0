@@ -18,7 +18,7 @@ namespace FeedbackApp_V4._0
         protected internal static bool loggedIn = false;
         protected internal static bool registered = false;
         protected internal static int recordCount;
-        protected internal static int userID;
+        protected internal static int uID;
 
         #endregion Local Variable Declarations
 
@@ -46,11 +46,11 @@ namespace FeedbackApp_V4._0
             cmd.Connection = conn;
 
             conn.Open();
-            userID = (int)cmd.ExecuteScalar();
+            uID = (int)cmd.ExecuteScalar();
             conn.Close();
 
-            MessageBox.Show(@"Max id = " + userID);
-            userID += 1;
+            MessageBox.Show(@"Max id = " + uID);
+            uID += 1;
         }
 
         #endregion Form Load Handler
@@ -185,13 +185,13 @@ namespace FeedbackApp_V4._0
 
             if (newUserForm.ShowDialog(this) == DialogResult.OK)
             {
-                var userName = newUserForm.txtUserName.Text;
-                var firstName = newUserForm.txtFirstName.Text;
-                var lastName = newUserForm.txtLastName.Text;
-                var password = newUserForm.txtPassword.Text;
-                var isPupil = newUserForm.chkIsPupil.Checked;
-                var isTeacher = newUserForm.chkIsTeacher.Checked;
-                var isAdmin = newUserForm.chkIsAdmin.Checked;
+                var uN = newUserForm.txtUserName.Text;
+                var fN = newUserForm.txtFirstName.Text;
+                var lN = newUserForm.txtLastName.Text;
+                var pw = newUserForm.txtPassword.Text;
+                var iP = newUserForm.chkIsPupil.Checked;
+                var iT = newUserForm.chkIsTeacher.Checked;
+                var iA = newUserForm.chkIsAdmin.Checked;
 
                 registered = true;
 
@@ -200,12 +200,13 @@ namespace FeedbackApp_V4._0
 
                 var conn = new SqlConnection(ConfigurationManager.ConnectionStrings["FeedbackApp_V4._0.Properties.Settings.FeedbackConnectionString"].ConnectionString);
 
-                var cmd = new SqlCommand();
-
-                cmd.CommandType = CommandType.Text;
-                cmd.CommandText =
-                    "INSERT INTO user_details (user_id, user_userName, user_firstName, user_lastName, isPupil, isTeacher, isAdmin) VALUES (userID, userName, firstName, lastName, isPupil, isTeacher, isAdmin)";
-                cmd.Connection = conn;
+                var cmd = new SqlCommand
+                {
+                    CommandType = CommandType.Text,
+                    CommandText =
+                    "INSERT INTO user_details (user_id, user_userName, user_firstName, user_lastName, isPupil, isTeacher, isAdmin) VALUES (uID, uN, fN,lN, iP, iT, iA)",
+                    Connection = conn
+                };
 
                 conn.Open();
                 cmd.ExecuteNonQuery();
