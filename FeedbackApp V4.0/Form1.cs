@@ -245,7 +245,8 @@ namespace FeedbackApp_V4._0
 
         private void NoSuchConn(string connectionString)
         {
-            throw new NotImplementedException();
+            MessageBox.Show(@"No such database exists, " + connectionString);
+            LogMessage("Requested database does not exist.");
         }
 
         #endregion NoSuchConn(connectionString) Method Handler
@@ -254,7 +255,8 @@ namespace FeedbackApp_V4._0
 
         private void NoSuchTable(string commandText)
         {
-            throw new NotImplementedException();
+            MessageBox.Show(@"No such table exists, " + commandText);
+            LogMessage("Requested table does not exist.");
         }
 
         #endregion NoSuchTable(commandText) Method Handler
