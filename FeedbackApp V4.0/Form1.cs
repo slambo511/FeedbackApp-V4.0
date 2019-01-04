@@ -40,13 +40,35 @@ namespace FeedbackApp_V4._0
 
             // Find last user_id and place it into a variable for creating new records.
             var conn = new SqlConnection(ConfigurationManager.ConnectionStrings["FeedbackApp_V4._0.Properties.Settings.FeedbackConnectionString"].ConnectionString);
-            var cmd = new SqlCommand();
-            cmd.CommandType = CommandType.Text;
-            cmd.CommandText = "SELECT MAX(user_id) FROM user_details";
-            cmd.Connection = conn;
+            var cmd = new SqlCommand
+            {
+                CommandType = CommandType.Text,
+                CommandText = "SELECT MAX(user_id) FROM user_details",
+                Connection = conn
+            };
 
-            conn.Open();
-            uID = (int)cmd.ExecuteScalar();
+            try
+            {
+                // Attempt connection as listed in App.Config
+                conn.Open();
+            }
+            catch
+            {
+                // If no connection available run the appropriate Function to handle exception
+                NoSuchConn(ConfigurationManager
+                    .ConnectionStrings["FeedbackApp_V4._0.Properties.Settings.FeedbackConnectionString"]
+                    .ConnectionString);
+            }
+
+            try
+            {
+                uID = (int) cmd.ExecuteScalar();
+            }
+            catch
+            {
+                NoSuchTable(cmd.CommandText);
+            }
+
             conn.Close();
 
             MessageBox.Show(@"Max id = " + uID);
@@ -218,6 +240,24 @@ namespace FeedbackApp_V4._0
         }
 
         #endregion ShowNewUserResistrationForm Handler
+
+        #region NoSuchConn(connectionString) Method Handler
+
+        private void NoSuchConn(string connectionString)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion NoSuchConn(connectionString) Method Handler
+
+        #region NoSuchTable(commandText) Method Handler
+
+        private void NoSuchTable(string commandText)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion NoSuchTable(commandText) Method Handler
 
     }
 }
