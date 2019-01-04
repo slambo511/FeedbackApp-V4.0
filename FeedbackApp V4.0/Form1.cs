@@ -1,11 +1,8 @@
 ﻿#region Includes
 
 using System;
-using System.Data.SqlClient;
+using System.Security.Authentication.ExtendedProtection;
 using System.Windows.Forms;
-using System.Configuration;
-using System.Data;
-
 
 #endregion Includes
 
@@ -13,14 +10,8 @@ namespace FeedbackApp_V4._0
 {
     public partial class frmLogin : Form
     {
-        #region Local Variable Declarations
-
         protected internal static bool loggedIn = false;
         protected internal static bool registered = false;
-        protected internal static int recordCount;
-        protected internal static int userID;
-
-        #endregion Local Variable Declarations
 
         #region Initiliaser Handler
 
@@ -37,20 +28,6 @@ namespace FeedbackApp_V4._0
         {
             btnLogin.Enabled = false;
             btnRegister.Enabled = true;
-
-            // Find last user_id and place it into a variable for creating new records.
-            var conn = new SqlConnection(ConfigurationManager.ConnectionStrings["FeedbackApp_V4._0.Properties.Settings.FeedbackConnectionString"].ConnectionString);
-            var cmd = new SqlCommand();
-            cmd.CommandType = CommandType.Text;
-            cmd.CommandText = "SELECT MAX(user_id) FROM user_details";
-            cmd.Connection = conn;
-
-            conn.Open();
-            userID = (int)cmd.ExecuteScalar();
-            conn.Close();
-
-            MessageBox.Show(@"Max id = " + userID);
-            userID += 1;
         }
 
         #endregion Form Load Handler
@@ -172,8 +149,6 @@ namespace FeedbackApp_V4._0
 
         #endregion Exit Button Handler
 
-        #region ShowNewUserRegistrationForm Handler
-
         public void ShowNewUserRegistrationForm()
         {
 
@@ -197,24 +172,9 @@ namespace FeedbackApp_V4._0
 
                 // MessageBox.Show(firstName + ", " + lastName + ", " + userName + ", " + password + ", isPupil " +
                 //                isPupil + ", isTeacher " + isTeacher + ", isAdmin" + isAdmin);
-
-                var conn = new SqlConnection(ConfigurationManager.ConnectionStrings["FeedbackApp_V4._0.Properties.Settings.FeedbackConnectionString"].ConnectionString);
-
-                var cmd = new SqlCommand();
-
-                cmd.CommandType = CommandType.Text;
-                cmd.CommandText =
-                    "INSERT INTO user_details (user_id, user_userName, user_firstName, user_lastName, isPupil, isTeacher, isAdmin) VALUES (userID, userName, firstName, lastName, isPupil, isTeacher, isAdmin)";
-                cmd.Connection = conn;
-
-                conn.Open();
-                cmd.ExecuteNonQuery();
-                conn.Close();
             }
 
         }
-
-        #endregion ShowNewUserResistrationForm Handler
 
     }
 }
