@@ -1,8 +1,11 @@
 ﻿#region Includes
 
 using System;
-using System.Security.Authentication.ExtendedProtection;
+using System.Data.SqlClient;
 using System.Windows.Forms;
+using System.Configuration;
+using System.Data;
+
 
 #endregion Includes
 
@@ -10,8 +13,14 @@ namespace FeedbackApp_V4._0
 {
     public partial class frmLogin : Form
     {
+        #region Local Variable Declarations
+
         protected internal static bool loggedIn = false;
         protected internal static bool registered = false;
+        protected internal static int recordCount;
+        protected internal static int uID;
+
+        #endregion Local Variable Declarations
 
         #region Initiliaser Handler
 
@@ -28,6 +37,42 @@ namespace FeedbackApp_V4._0
         {
             btnLogin.Enabled = false;
             btnRegister.Enabled = true;
+
+            // Find last user_id and place it into a variable for creating new records.
+            var conn = new SqlConnection(ConfigurationManager.ConnectionStrings["FeedbackApp_V4._0.Properties.Settings.FeedbackConnectionString"].ConnectionString);
+            var cmd = new SqlCommand
+            {
+                CommandType = CommandType.Text,
+                CommandText = "SELECT MAX(user_id) FROM user_details",
+                Connection = conn
+            };
+
+            try
+            {
+                // Attempt connection as listed in App.Config
+                conn.Open();
+            }
+            catch
+            {
+                // If no connection available run the appropriate Function to handle exception
+                NoSuchConn(ConfigurationManager
+                    .ConnectionStrings["FeedbackApp_V4._0.Properties.Settings.FeedbackConnectionString"]
+                    .ConnectionString);
+            }
+
+            try
+            {
+                uID = (int)cmd.ExecuteScalar();
+            }
+            catch
+            {
+                NoSuchTable(cmd.CommandText);
+            }
+
+            conn.Close();
+
+            MessageBox.Show(@"Max id = " + uID);
+            uID += 1;
         }
 
         #endregion Form Load Handler
@@ -149,6 +194,8 @@ namespace FeedbackApp_V4._0
 
         #endregion Exit Button Handler
 
+        #region ShowNewUserRegistrationForm Handler
+
         public void ShowNewUserRegistrationForm()
         {
 
@@ -160,21 +207,59 @@ namespace FeedbackApp_V4._0
 
             if (newUserForm.ShowDialog(this) == DialogResult.OK)
             {
-                var userName = newUserForm.txtUserName.Text;
-                var firstName = newUserForm.txtFirstName.Text;
-                var lastName = newUserForm.txtLastName.Text;
-                var password = newUserForm.txtPassword.Text;
-                var isPupil = newUserForm.chkIsPupil.Checked;
-                var isTeacher = newUserForm.chkIsTeacher.Checked;
-                var isAdmin = newUserForm.chkIsAdmin.Checked;
+                var uN = newUserForm.txtUserName.Text;
+                var fN = newUserForm.txtFirstName.Text;
+                var lN = newUserForm.txtLastName.Text;
+                var pw = newUserForm.txtPassword.Text;
+                var iP = newUserForm.chkIsPupil.Checked;
+                var iT = newUserForm.chkIsTeacher.Checked;
+                var iA = newUserForm.chkIsAdmin.Checked;
+
+                // not sure what is going on here.
 
                 registered = true;
 
                 // MessageBox.Show(firstName + ", " + lastName + ", " + userName + ", " + password + ", isPupil " +
                 //                isPupil + ", isTeacher " + isTeacher + ", isAdmin" + isAdmin);
+
+                var conn = new SqlConnection(ConfigurationManager.ConnectionStrings["FeedbackApp_V4._0.Properties.Settings.FeedbackConnectionString"].ConnectionString);
+
+                var cmd = new SqlCommand
+                {
+                    CommandType = CommandType.Text,
+                    CommandText =
+                    "INSERT INTO user_details (user_id, user_userName, user_firstName, user_lastName, isPupil, isTeacher, isAdmin) VALUES (uID, uN, fN,lN, iP, iT, iA)",
+                    Connection = conn
+                };
+
+                conn.Open();
+                cmd.ExecuteNonQuery();
+                conn.Close();
             }
 
         }
+
+        #endregion ShowNewUserResistrationForm Handler
+
+        #region NoSuchConn(connectionString) Method Handler
+
+        private void NoSuchConn(string connectionString)
+        {
+            MessageBox.Show(@"No such database exists, " + connectionString);
+            LogMessage("Requested database does not exist.");
+        }
+
+        #endregion NoSuchConn(connectionString) Method Handler
+
+        #region NoSuchTable(commandText) Method Handler
+
+        private void NoSuchTable(string commandText)
+        {
+            MessageBox.Show(@"No such table exists, " + commandText);
+            LogMessage("Requested table does not exist.");
+        }
+
+        #endregion NoSuchTable(commandText) Method Handler
 
     }
 }
